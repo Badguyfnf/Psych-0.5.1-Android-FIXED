@@ -1,5 +1,5 @@
 import flixel.text.FlxText;
- import flixel.FlxState;
+import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSubState;
 import flixel.FlxBasic;
