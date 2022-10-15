@@ -1,12 +1,15 @@
 #if web
-import openfl.net.NetConnection;
-import openfl.net.NetStream;
-import openfl.events.NetStatusEvent;
-import openfl.media.Video;
-#elseif android
+import flixel.text.FlxText;
+// import flixel.FlxState;
+import flixel.FlxG;
+// import flixel.FlxSubState;
+import flixel.FlxBasic;
+
 import extension.webview.WebView;
-import android.*;
-#else
+
+using StringTools;
+
+class FlxVideo extends FlxBasic
 import openfl.events.Event;
 import vlc.VlcBitmap;
 #end
