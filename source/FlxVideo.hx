@@ -1,10 +1,12 @@
-import flixel.text.FlxText;
+#if web
+import openfl.net.NetConnection;
 import flixel.FlxState;
 import flixel.FlxG;
 import flixel.FlxSubState;
 import flixel.FlxBasic;
 import extension.webview.WebView;
 using StringTools;
+
 class FlxVideo extends FlxBasic
 {
 	public static var androidPath:String = 'file:///android_asset/';
