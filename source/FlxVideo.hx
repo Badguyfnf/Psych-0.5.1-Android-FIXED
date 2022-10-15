@@ -13,15 +13,18 @@ import vlc.VlcBitmap;
 import flixel.FlxBasic;
 import flixel.FlxG;
 
-class FlxVideo extends FlxBasic {
-	#if VIDEOS_ALLOWED
-	public var finishCallback:Void->Void = null;
-	
-	#if desktop
-	public static var vlcBitmap:VlcBitmap;
-	#end
+class FlxVideo extends FlxBasic
+{
+	public static var androidPath:String = 'file:///android_asset/';
 
-	public function new(name:String) {
+	public static var source1:String = 'assets/videos/';
+
+	// public var nextState:FlxState;
+
+    public var finishCallback:Void->Void = null;
+
+	public function new(source:String)
+	{
 		super();
 
 		#if web
