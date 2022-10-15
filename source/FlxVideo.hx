@@ -10,13 +10,6 @@ import extension.webview.WebView;
 using StringTools;
 
 class FlxVideo extends FlxBasic
-import openfl.events.Event;
-import vlc.VlcBitmap;
-#end
-import flixel.FlxBasic;
-import flixel.FlxG;
-
-class FlxVideo extends FlxBasic
 {
 	public static var androidPath:String = 'file:///android_asset/';
 
