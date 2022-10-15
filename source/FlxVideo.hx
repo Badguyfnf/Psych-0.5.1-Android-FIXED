@@ -1,4 +1,3 @@
-#if web
 import openfl.net.NetConnection;
 import flixel.FlxState;
 import flixel.FlxG;
