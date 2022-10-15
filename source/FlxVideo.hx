@@ -1,4 +1,3 @@
-#if web
 import flixel.text.FlxText;
 // import flixel.FlxState;
 import flixel.FlxG;
