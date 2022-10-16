@@ -1,24 +1,23 @@
+#if web
 import openfl.net.NetConnection;
-import flixel.FlxState;
-import flixel.FlxG;
-import flixel.FlxSubState;
+import openfl.net.NetStream;
+import openfl.events.NetStatusEvent;
+import openfl.media.Video;
+#else
+import vlc.MP4Handler;
+#end
 import flixel.FlxBasic;
-import extension.webview.WebView;
+import flixel.FlxG;
 
-using StringTools;
+class FlxVideo extends FlxBasic {
+	#if VIDEOS_ALLOWED
+	public var finishCallback:Void->Void = null;
+	
+	#if !web
+	public static var video:MP4Handler;
+	#end
 
-class FlxVideo extends FlxBasic
-{
-	public static var androidPath:String = 'file:///android_asset/';
-
-	public static var source1:String = 'assets/videos/';
-
-	// public var nextState:FlxState;
-
-    public var finishCallback:Void->Void = null;
-
-	public function new(source:String)
-	{
+	public function new(name:String) {
 		super();
 
 		#if web
@@ -45,105 +44,18 @@ class FlxVideo extends FlxBasic
 			}
 		});
 		netStream.play(name);
-		#elseif android
 
-		WebView.onClose = function(){
-        	        trace("WebView has been closed!");
-	                if (finishCallback != null){
-				finishCallback();
-			}
+		#else
+
+		video = new MP4Handler();
+		video.finishCallback = function()
+		{
+				if (finishCallback != null){
+			        finishCallback();
+		        }
 		}
-		WebView.onURLChanging = function(url:String){
-	                trace("WebView is about to open: " + url);
-	                if (url == 'http://exitme/'){
-	        	        if (finishCallback != null){
-					finishCallback();
-				}
-			}
-		}
-		WebView.open(android.Tools.getFileUrl(name), null, ['http://exitme/']);
-
-		#elseif desktop
-		// by Polybius, check out PolyEngine! https://github.com/polybiusproxy/PolyEngine
-
-		vlcBitmap = new VlcBitmap();
-		vlcBitmap.set_height(FlxG.stage.stageHeight);
-		vlcBitmap.set_width(FlxG.stage.stageHeight * (16 / 9));
-
-		vlcBitmap.onComplete = onVLCComplete;
-		vlcBitmap.onError = onVLCError;
-
-		FlxG.stage.addEventListener(Event.ENTER_FRAME, fixVolume);
-		vlcBitmap.repeat = 0;
-		vlcBitmap.inWindow = false;
-		vlcBitmap.fullscreen = false;
-		fixVolume(null);
-
-		FlxG.addChildBelowMouse(vlcBitmap);
-		vlcBitmap.play(checkFile(name));
+		video.playVideo(name);
 		#end
 	}
-
-	#if desktop
-	function checkFile(fileName:String):String
-	{
-		var pDir = "";
-		var appDir = "file:///" + Sys.getCwd() + "/";
-
-		if (fileName.indexOf(":") == -1) // Not a path
-			pDir = appDir;
-		else if (fileName.indexOf("file://") == -1 || fileName.indexOf("http") == -1) // C:, D: etc? ..missing "file:///" ?
-			pDir = "file:///";
-
-		return pDir + fileName;
-	}
-	
-	public static function onFocus() {
-		if(vlcBitmap != null) {
-			vlcBitmap.resume();
-		}
-	}
-	
-	public static function onFocusLost() {
-		if(vlcBitmap != null) {
-			vlcBitmap.pause();
-		}
-	}
-
-	function fixVolume(e:Event)
-	{
-		// shitty volume fix
-		vlcBitmap.volume = 0;
-		if(!FlxG.sound.muted && FlxG.sound.volume > 0.01) { //Kind of fixes the volume being too low when you decrease it
-			vlcBitmap.volume = FlxG.sound.volume * 0.5 + 0.5;
-		}
-	}
-
-	public function onVLCComplete()
-	{
-		vlcBitmap.stop();
-
-		// Clean player, just in case!
-		vlcBitmap.dispose();
-
-		if (FlxG.game.contains(vlcBitmap))
-		{
-			FlxG.game.removeChild(vlcBitmap);
-		}
-
-		if (finishCallback != null)
-		{
-			finishCallback();
-		}
-	}
-	
-	function onVLCError()
-		{
-			trace("An error has occured while trying to load the video.\nPlease, check if the file you're loading exists.");
-			if (finishCallback != null) {
-				finishCallback();
-			}
-		}
-	#end
 	#end
 }
