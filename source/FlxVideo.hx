@@ -5,7 +5,6 @@ import openfl.events.NetStatusEvent;
 import openfl.media.Video;
 #else
 import vlc.MP4Handler;
-#end
 import flixel.FlxBasic;
 import flixel.FlxG;
 
