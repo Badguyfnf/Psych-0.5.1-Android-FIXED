@@ -41,7 +41,7 @@ class MainMenuState extends MusicBeatState
 		#if !switch 'donate', #end
 		'options'
 	];
-
+        car chn:FlxObject
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
@@ -93,7 +93,15 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 		// magenta.scrollFactor.set();
-
+               chn = new FlxSprite();
+               chn.frames =          Paths.getSparrowAtlas('mainmenu/BOYFRIEND_Run');
+                chn.antialiasing = ClientPrefs.globalAntialiasing;
+                chn.animation.addByPrefix('badguy',"idle", 24, true);
+                chn.animation.play('badguy');
+                chn.x += 170;
+                chn.y -= 189;
+                chn.scale.set(1.2,1.2);
+                add(chn);
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
